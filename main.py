@@ -49,17 +49,23 @@ def parse_values(number):
         value_of_area = float(last_chars1)
         rows.append([prices,value_of_area])
         prices_out.append(prices)
-for page in range(1,10):
-    parse_values(page)
-df = pd.DataFrame(rows,columns=(['Cena','Powierzchnia']))
-print("cena  minimalna i maksymalna",min(prices_out),max(prices_out))
-bins = [0,100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000,1100000,4000000]
-cat = pd.cut(x=prices_out,bins=bins,include_lowest=True)
+def histogram_show():
+    df = pd.DataFrame(rows, columns=(['Cena', 'Powierzchnia']))
+    summary = df.describe()
+    print(summary)
+    bins = [0, 100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000, 1100000, 4000000]
+    cat = pd.cut(x=prices_out, bins=bins, include_lowest=True)
+    ax = cat.value_counts().plot.bar(rot=90, color="black", figsize=(30, 20))
+    plt.show()
+def normality_test(prices_out):
+    test = shapiro(prices_out)
+    print(test)
 
-ax = cat.value_counts().plot.bar(rot=90, color="black", figsize=(30,20))
-test = shapiro(prices_out)
-print(test)
-plt.show()
+for page in range(1,5):
+    parse_values(page)
+histogram_show()
+normality_test(prices_out)
+
 # wniosek: p-value < 0.05 co pozwala stwierdzic, że rozkład cen mieszkan na pierwszych 10
 # stronach serwisu otodom nie jest rozkładem normalnym.Hipoteza1 jest prawdziwa.
 
