@@ -61,7 +61,7 @@ def normality_test(prices_out):
     test = shapiro(prices_out)
     print(test)
 
-for page in range(1,5):
+for page in range(1,10):
     parse_values(page)
 histogram_show()
 normality_test(prices_out)
